@@ -47,6 +47,21 @@ function Todolist() {
     setEditTodoId(id);
   };
 
+  const handleCompleted = (id) => {
+    // Find the todo to complete
+    const todoToComplete = todos.find((todo) => todo._id === id);
+
+    // Only dispatch updateTodo action if the todo is not already completed
+    if (!todoToComplete.completed) {
+      dispatch(updateTodo({
+        id: todoToComplete._id,
+        title: todoToComplete.title,
+        description: todoToComplete.description,
+        completed: true
+      }));
+    }
+  };
+
   return (
     <>
       <h2 style={{}}>ToDo List</h2>
@@ -74,15 +89,15 @@ function Todolist() {
             <Card.Body style={{ display: 'flex', justifyContent: 'space-between' }}>
               <div>
                 {todo.completed ? (
-                  <>
-                    <Card.Title>{todo.title}</Card.Title>
+                  <> 
+                    <del>
+                      <Card.Title>{todo.title}</Card.Title> 
+                    </del>
                     <Card.Text>{todo.description}</Card.Text>
                   </>
                 ) : (
                   <>
-                    <del>
-                      <Card.Title>{todo.title}</Card.Title>
-                    </del>
+                    <Card.Title>{todo.title}</Card.Title>
                     <Card.Text>{todo.description}</Card.Text>
                   </>
                 )}
@@ -90,18 +105,18 @@ function Todolist() {
               <div>
                 {todo.completed ? (
                   <>
-                    <Button variant="danger" style={{ margin: '0 10px' }}>
-                      Completed
-                    </Button>
-                    <Button variant="primary" onClick={() => handleEdit(todo._id)}>
-                      Edit
-                    </Button>
                     <Button variant="danger" onClick={() => handleDelete(todo._id)} style={{ margin: '0 10px' }}>
                       Delete
                     </Button>
                   </>
                 ) : (
                   <>
+                    <Button variant="success" onClick={() => handleCompleted(todo._id)} style={{ margin: '0 10px' }}>
+                      Completed
+                    </Button>
+                    <Button variant="primary" onClick={() => handleEdit(todo._id)}>
+                      Edit
+                    </Button>
                     <Button variant="danger" onClick={() => handleDelete(todo._id)} style={{ margin: '0 10px' }}>
                       Delete
                     </Button>
