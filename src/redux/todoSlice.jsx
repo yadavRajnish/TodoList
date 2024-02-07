@@ -13,7 +13,6 @@ export const fetchTodos = createAsyncThunk('todos/fetchTodos', async () => {
 export const addTodo = createAsyncThunk('todos/addTodo', async ({ title, description }, { dispatch }) => {
   try {
     const todo = await addTodoItem(title, description);
-    // Dispatch fetchTodos() after adding a new todo
     dispatch(fetchTodos());
     return todo;
   } catch (error) {
