@@ -7,10 +7,6 @@ import Form from 'react-bootstrap/Form';
 import InputGroup from 'react-bootstrap/InputGroup';
 import Row from 'react-bootstrap/Row';
 import Card from 'react-bootstrap/Card';
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
-
-
 
 function Todolist() {
   const [title, setTitle] = useState('');
@@ -29,12 +25,10 @@ function Todolist() {
     dispatch(addTodo({ title, description }));
     setTitle('');
     setDescription('');
-    toast.success('My ToDos Added  Successfully !',);
   };
 
   const handleDelete = (id) => {
     dispatch(deleteTodo(id));
-    toast.success('My ToDos Deleted Successfully !',);
   };
 
   const handleCompleted = (id) => {
@@ -46,14 +40,13 @@ function Todolist() {
     }).catch(error => {
       console.error('Error updating and refreshing todo:', error);
     });
-    toast.success('My ToDos Completed Successfully !',);
   };
 
   return (
     <>
-      <h2 style={{color: 'white',textAlign:"center"}}> My ToDos</h2>
+      <h2 style={{color: 'white'}}> My ToDos</h2>
 
-      <Form style={{ color: 'white', backgroundColor: 'black', borderColor:"white" ,  padding: '20px', textAlign: 'center',borderRadius:"10px"  }} onSubmit={handleSubmit}>
+      <Form style={{ color: 'black', backgroundColor:"whitesmoke" ,  padding: '20px', textAlign: 'center',borderRadius:"10px"  }} onSubmit={handleSubmit}>
         <div style={{}} >
         <Row className="mb-3">
           <Form.Group as={Col} md="6" controlId="validationCustom01">
@@ -67,7 +60,7 @@ function Todolist() {
           </Form.Group>
         </Row>
         </div>
-        <Button type="submit">
+        <Button type="submit" style={{backgroundColor:"green"}}>
           Add Todo
         </Button>
       </Form>
@@ -75,18 +68,18 @@ function Todolist() {
       <div>
         {todos.map((todo) => (
           <Card key={todo._id} style={{ marginTop: '20px',borderRadius:"10px" }}>
-            <Card.Body style={{ display: 'flex', justifyContent: 'space-between',backgroundColor:"black",color:"white",borderRadius:"10px" }}>
+            <Card.Body style={{ display: 'flex', justifyContent: 'space-between', backgroundColor:"whitesmoke" ,borderRadius:"10px" }}>
               <div>
                 {todo.completed ? (
                   <>
-                    <del style={{color:"red",backgroundColor:"red"}}>
+                    <del>
                       <Card.Title>{todo.title}</Card.Title>
                       <Card.Text>{todo.description}</Card.Text>
                     </del>
                   </>
                 ) : (
                   <>
-                    <Card.Title style={{color:"yellow"}}>{todo.title}</Card.Title>
+                    <Card.Title>{todo.title}</Card.Title>
                     <Card.Text>{todo.description}</Card.Text>
                   </>
                 )}
@@ -94,17 +87,17 @@ function Todolist() {
               <div>
                 {todo.completed ? (
                   <>
-                    <Button variant="danger" onClick={() => handleDelete(todo._id)} style={{ margin: '0 10px' }}>
+                    <Button variant="danger" onClick={() => handleDelete(todo._id)} style={{ margin: '0 10px',backgroundColor:"red" }}>
                       Delete
                     </Button>
                   </>
                 ) : (
                   <>
-                    <Button variant="success" onClick={() => handleCompleted(todo._id)} style={{ margin: '0 10px' }}>
+                    <Button onClick={() => handleCompleted(todo._id)} style={{ margin: '0 10px' }}>
                       Completed
                     </Button>
 
-                    <Button variant="danger" onClick={() => handleDelete(todo._id)} style={{ margin: '0 10px' }}>
+                    <Button onClick={() => handleDelete(todo._id)} style={{ margin: '0 10px',backgroundColor:"red" }}>
                       Delete
                     </Button>
                   </>
@@ -114,7 +107,6 @@ function Todolist() {
           </Card>
         ))}
       </div>
-      <ToastContainer />
     </>
   );
 }
