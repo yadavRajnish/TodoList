@@ -7,6 +7,10 @@ import Form from 'react-bootstrap/Form';
 import InputGroup from 'react-bootstrap/InputGroup';
 import Row from 'react-bootstrap/Row';
 import Card from 'react-bootstrap/Card';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
+
 
 function Todolist() {
   const [title, setTitle] = useState('');
@@ -25,10 +29,12 @@ function Todolist() {
     dispatch(addTodo({ title, description }));
     setTitle('');
     setDescription('');
+    toast.success('My ToDos Added  Successfully !',);
   };
 
   const handleDelete = (id) => {
     dispatch(deleteTodo(id));
+    toast.success('My ToDos Deleted Successfully !',);
   };
 
   const handleCompleted = (id) => {
@@ -36,17 +42,19 @@ function Todolist() {
       id,
       completed: true
     })).then(() => {
-      dispatch(fetchTodos()); 
+      dispatch(fetchTodos());
     }).catch(error => {
       console.error('Error updating and refreshing todo:', error);
     });
+    toast.success('My ToDos Completed Successfully !',);
   };
 
   return (
     <>
-      <h2 style={{}}>ToDo List</h2>
+      <h2 style={{color: 'white',textAlign:"center"}}> My ToDos</h2>
 
-      <Form style={{ color: 'white', backgroundColor: 'rgb(39, 37, 37)', padding: '20px', textAlign: 'center' }} onSubmit={handleSubmit}>
+      <Form style={{ color: 'white', backgroundColor: 'black', borderColor:"white" ,  padding: '20px', textAlign: 'center',borderRadius:"10px"  }} onSubmit={handleSubmit}>
+        <div style={{}} >
         <Row className="mb-3">
           <Form.Group as={Col} md="6" controlId="validationCustom01">
             <Form.Label>Title</Form.Label>
@@ -58,26 +66,27 @@ function Todolist() {
             <Form.Control required type="text" placeholder="Description" value={description} onChange={(e) => setDescription(e.target.value)} />
           </Form.Group>
         </Row>
-        <Button type="submit" style={{ textAlign: 'center' }}>
+        </div>
+        <Button type="submit">
           Add Todo
         </Button>
       </Form>
 
       <div>
         {todos.map((todo) => (
-          <Card key={todo._id} style={{ marginTop: '20px' }}>
-            <Card.Body style={{ display: 'flex', justifyContent: 'space-between' }}>
+          <Card key={todo._id} style={{ marginTop: '20px',borderRadius:"10px" }}>
+            <Card.Body style={{ display: 'flex', justifyContent: 'space-between',backgroundColor:"black",color:"white",borderRadius:"10px" }}>
               <div>
                 {todo.completed ? (
                   <>
-                    <del>
+                    <del style={{color:"red",backgroundColor:"red"}}>
                       <Card.Title>{todo.title}</Card.Title>
+                      <Card.Text>{todo.description}</Card.Text>
                     </del>
-                    <Card.Text>{todo.description}</Card.Text>
                   </>
                 ) : (
                   <>
-                    <Card.Title>{todo.title}</Card.Title>
+                    <Card.Title style={{color:"yellow"}}>{todo.title}</Card.Title>
                     <Card.Text>{todo.description}</Card.Text>
                   </>
                 )}
@@ -94,7 +103,7 @@ function Todolist() {
                     <Button variant="success" onClick={() => handleCompleted(todo._id)} style={{ margin: '0 10px' }}>
                       Completed
                     </Button>
-                    
+
                     <Button variant="danger" onClick={() => handleDelete(todo._id)} style={{ margin: '0 10px' }}>
                       Delete
                     </Button>
@@ -105,6 +114,7 @@ function Todolist() {
           </Card>
         ))}
       </div>
+      <ToastContainer />
     </>
   );
 }

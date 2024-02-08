@@ -1,6 +1,5 @@
 import axios from 'axios';
-const baseurl = "https://todo-9331.onrender.com" //"http://localhost:8001"
-//"https://todo-9331.onrender.com";
+const baseurl =  "https://todo-9331.onrender.com"  //"http://localhost:8001"
 
 export const fetchTodoList = async () => {
   try {
