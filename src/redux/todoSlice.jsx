@@ -29,14 +29,30 @@ export const deleteTodo = createAsyncThunk('todos/deleteTodo', async (id) => {
   }
 });
 
-export const updateTodo = createAsyncThunk('todos/updateTodo', async ({ id, title, description }) => {
+export const updateTodo = createAsyncThunk('todos/updateTodo', async ({ id, completed }) => {
   try {
-    const updatedTodo = await updateTodoItem(id, title, description);
+    const updatedTodo = await updateTodoItem(id, completed);
     return updatedTodo;
   } catch (error) {
     throw new Error('Error updating todo:', error);
   }
 });
+
+export const updateTodoAndRefresh = ({ id, completed }) => async dispatch => {
+  try {
+    const updatedTodo = await updateTodoItem(id, completed);
+    dispatch(updateTodoAndRefreshSuccess(updatedTodo));
+  } catch (error) {
+    throw new Error('Error updating todo:', error);
+  }
+};
+
+const updateTodoAndRefreshSuccess = (updatedTodo) => {
+  return {
+    type: 'todos/updateTodoFulfilled',
+    payload: updatedTodo,
+  };
+};
 
 const todoSlice = createSlice({
   name: 'todos',
@@ -65,7 +81,7 @@ const todoSlice = createSlice({
       .addCase(deleteTodo.fulfilled, (state, action) => {
         state.todos = state.todos.filter((todo) => todo._id !== action.payload);
       })
-      .addCase(updateTodo.fulfilled, (state, action) => {
+      .addCase('todos/updateTodoFulfilled', (state, action) => {
         state.todos = state.todos.map((todo) => (todo._id === action.payload._id ? action.payload : todo));
       });
   },
